@@ -76,11 +76,9 @@ class WebSearchTool(CustomTool):
 
     def get_paragraphs(self, paragraphs):
 
-        relevant_paragraphs = []
-        for paragraph in paragraphs:
-            if paragraph.class_type == "good":
-                relevant_paragraphs.append(paragraph)
-
+        relevant_paragraphs = [
+            paragraph for paragraph in paragraphs if paragraph.class_type == "good"
+        ]
         answer = ""
 
         # Define the number of paragraphs to consider from each section
@@ -138,9 +136,7 @@ class WebSearchTool(CustomTool):
         except Exception as e:
             return answer
 
-        answer = self.get_paragraphs(paragraphs)
-
-        return answer
+        return self.get_paragraphs(paragraphs)
 
     def run(self, query: str):
 

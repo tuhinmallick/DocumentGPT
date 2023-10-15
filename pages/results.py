@@ -49,10 +49,10 @@ with tab1:
 with tab2:
     st.subheader("Google Results")
     cols = st.columns(5)
-    buttons = []
-    for i, keyword in enumerate(st.session_state.search_keywords):
-        buttons.append(cols[i].button(keyword, use_container_width=True))
-
+    buttons = [
+        cols[i].button(keyword, use_container_width=True)
+        for i, keyword in enumerate(st.session_state.search_keywords)
+    ]
     search_g = ""
 
     for i, button in enumerate(buttons):
@@ -64,20 +64,17 @@ with tab2:
 with tab3:
     st.subheader("Youtube Results")
     cols = st.columns(5)
-    buttons = []
-    results = []
-    for i, keyword in enumerate(st.session_state.search_keywords):
-        buttons.append(cols[i].button(keyword, use_container_width=True, key=i))
-
+    buttons = [
+        cols[i].button(keyword, use_container_width=True, key=i)
+        for i, keyword in enumerate(st.session_state.search_keywords)
+    ]
     search_y = st.text_input("What do you want to search for?", key='youtube')
 
     for i, button in enumerate(buttons):
         if button:
             search_y = st.session_state.search_keywords[i]
 
-    if search_y:
-        results = YoutubeSearch(search_y, max_results=3).to_dict()
-
+    results = YoutubeSearch(search_y, max_results=3).to_dict() if search_y else []
     _, col2, _ = st.columns([1.8, 5, 1])
 
     with col2:

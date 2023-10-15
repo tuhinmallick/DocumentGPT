@@ -16,9 +16,9 @@ def save_pdf_image(uploaded_file):
     st.session_state.pdf_bytes = pdf_bytes
     doc = fitz.open(stream=pdf_bytes, filetype="pdf")
     images = []
-    for i, page in enumerate(doc):  # iterate through the pages
-        zoom_x = 2  # horizontal zoom
-        zoom_y = 2  # vertical zoom
+    zoom_x = 2  # horizontal zoom
+    zoom_y = 2  # vertical zoom
+    for page in doc:
         mat = fitz.Matrix(zoom_x, zoom_y)  # zoom factor 2 in each dimension
         pix = page.get_pixmap(matrix=mat)  # use 'mat' instead of the identity matrix
         img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
@@ -33,9 +33,7 @@ def save_pdf_image(uploaded_file):
 
     buffered = io.BytesIO()
     long_image.save(buffered, format="PNG")
-    image_bytes = base64.b64encode(buffered.getvalue()).decode()
-
-    return image_bytes
+    return base64.b64encode(buffered.getvalue()).decode()
 
 
 @st.cache_resource
@@ -70,15 +68,13 @@ def sidebar():
             "1. Enter your [OpenAI API key](https://platform.openai.com/account/api-keys) below🔑\n"  # noqa: E501
             "2. Upload a PDF file📄\n"
         )
-        api_key_input = st.text_input(
+        if api_key_input := st.text_input(
             "OpenAI API Key",
             type="password",
             placeholder="Paste your OpenAI API key here (sk-...)",
             help="You can get your API key from https://platform.openai.com/account/api-keys.",  # noqa: E501
             value=st.session_state.get("OPENAI_API_KEY", ""),
-        )
-
-        if api_key_input:
+        ):
             set_openai_api_key(api_key_input)
 
         st.markdown("---")
