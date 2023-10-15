@@ -57,44 +57,40 @@ class ConversationalAgent:
         summarize_tool = SummarizationTool(llm, st.session_state['document_chunks'])
         arxiv_tool = ArxivTool(llm)
 
-        tools = [
+        return [
             Tool(
                 name="Lookup from local database",
                 func=lookup_tool.run,
                 description="Always useful for finding the exactly written answer to the question by looking "
-                            "into a collection of academic documents. Input should be a query, not referencing "
-                            "any obscure pronouns from the conversation before that will pull out relevant information "
-                            "from the database."
+                "into a collection of academic documents. Input should be a query, not referencing "
+                "any obscure pronouns from the conversation before that will pull out relevant information "
+                "from the database.",
             ),
-
             Tool(
                 name="Search Internet from Arxiv",
                 func=arxiv_tool.run,
                 description="A wrapper around arxiv.org an Online Research Paper Database. Useful for when you need "
-                            "to answer questions about Physics, Mathematics, Computer Science, Quantitative Biology, "
-                            "Quantitative Finance, Statistics, Electrical Engineering, and Economics from scientific "
-                            "articles on arxiv.org before you perform a regular search on the internet. Input should "
-                            "be a search query and not referencing any obscure pronouns from the conversation. "
+                "to answer questions about Physics, Mathematics, Computer Science, Quantitative Biology, "
+                "Quantitative Finance, Statistics, Electrical Engineering, and Economics from scientific "
+                "articles on arxiv.org before you perform a regular search on the internet. Input should "
+                "be a search query and not referencing any obscure pronouns from the conversation. ",
             ),
-
             Tool(
                 name="Search Internet",
                 func=search_tool.run,
                 description="Useful when you cannot find a clear answer by looking up the database or from the online "
-                            "research paper database so that you need to search the regular internet for general"
-                            " web articles for further context and understanding to give an elaborate,exact and "
-                            "clear answer. Input should be a fully formed question based on the context of what"
-                            "you couldn't find and not referencing any obscure pronouns from the conversation before."
+                "research paper database so that you need to search the regular internet for general"
+                " web articles for further context and understanding to give an elaborate,exact and "
+                "clear answer. Input should be a fully formed question based on the context of what"
+                "you couldn't find and not referencing any obscure pronouns from the conversation before.",
             ),
             Tool(
                 name="Summarize Database",
                 func=summarize_tool.run,
                 description="Only use when the human asks to summarize the entire document. Do not use for any other "
-                            "tasks other than the human suggesting you to do so "
+                "tasks other than the human suggesting you to do so ",
             ),
         ]
-
-        return tools
 
     def get_agent(self):
         chat_model = ChatOpenAI(

@@ -125,12 +125,7 @@ class PDFDBStore:
             self.remove_multiple_newlines,
         ]
         cleaned_text_pdf = self.clean_text(raw_pages, cleaning_functions)
-        document_chunks = self.text_to_docs(cleaned_text_pdf, metadata)
-
-        # Optional: Reduce embedding cost by only using the first 23 pages
-        # document_chunks = document_chunks[:70]
-
-        return document_chunks
+        return self.text_to_docs(cleaned_text_pdf, metadata)
 
     def get_vectorDB(self, return_docs=False):
 
